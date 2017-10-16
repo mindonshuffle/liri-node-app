@@ -7,9 +7,22 @@ var twitterKeys = {
   access_token_secret: 'dEPUrbVJhdjbroH1JwaG5JHRckyZuMplPM7mSHAppgpAl',
 }
 
-module.exports = twitterKeys;
+var spotifyKeys = {
+	id: '22728a6400bb47a08ce3ba730437add1',
+	secret: 'b981ee20ee9544f1b717a01907152056'
+}
+
+module.exports = {
+
+	spotifyKeys: spotifyKeys,
+	twitterKeys: twitterKeys
+
+};
 
 
+
+
+// twitter:
 // account scofotemp
 //account email thescottfoster@outlook.com
 // pw reg

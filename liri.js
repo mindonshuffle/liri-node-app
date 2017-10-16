@@ -3,18 +3,19 @@
 var keys = require("./keys.js");
 var twitter = require("twitter");
 var request = require("request");
+var Spotify = require('node-spotify-api');
 var fs = require("fs");
 
 //console.log(keys)
 
 // initialize Twitter API w/ keys from keys.js
-var client = new twitter(keys);
+var client = new twitter(keys.twitterKeys);
 
 var params = {screen_name: 'scofotemp'};
 
 // initialize Spotify API w/ keys
 
-
+var spotify = new Spotify(keys.spotifyKeys);
 
 //sets LIRI's function mode
 var liriMode = process.argv[2];
@@ -74,21 +75,41 @@ function spotifyThisSong(userInput){
 
 	//set default if no input from user
 	if( userInput === undefined ){
-		userInput = "The Sign"
+		userInput = "The Sign Ace of Base";
 	}
 
-	console.log('Spotify: '+userInput);
+	//console.log('Spotify: '+userInput);
 
 	//make request to Spotify
 
-	//print appropriate responses
-	//Artist(s)
-     
- 	//The song's name
-     
-    //A preview link of the song from Spotify
-     
-    //The album that the song is from
+	spotify.search({ type: 'track', query: userInput }, function(err, data) {
+	    if ( err ) {
+	        console.log('Error occurred: ' + err);
+	        return;
+	    }
+
+	    //log full data object
+	    //console.log(JSON.stringify(data.tracks.items[0], null, 2));
+
+		//print appropriate responses
+
+		console.log('\nSpotify results for: ' + userInput +':\n');
+
+		//Artist(s)
+		for( var i = 0; i < data.tracks.items[0].artists.length; i++ ){
+			console.log('Artist: ' +data.tracks.items[0].artists[i].name +' '); 
+		}
+
+	 	//The song's name
+	    console.log('Song: ' +data.tracks.items[0].name); 
+
+	    //The album that the song is from
+	    console.log('Album: ' +data.tracks.items[0].album.name)
+	    
+	    //A preview link of the song from Spotify
+	    console.log('Preview: ' +data.tracks.items[0].preview_url);
+
+   	});
 
 };
 
