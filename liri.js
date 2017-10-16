@@ -24,6 +24,7 @@ var liriMode = process.argv[2];
 var userInput = process.argv[3];
 
 
+
 // --- --- --- FUNCTION DECLARATIONS --- --- ---
 
 function myTweets(){
@@ -34,6 +35,13 @@ function myTweets(){
 		    for (var i = 0; i < tweets.length && i < 20; i++){
 		    	// console.log('"'+tweets[i].text+'" was tweeted ' +tweets[i].created_at);
 		    	console.log(tweets[i].created_at+': '+tweets[i].text);
+
+		    	fs.appendFile('log.txt', '\n'+ tweets[i].created_at+': '+tweets[i].text,'utf8', function(err){
+					if(err){
+						console.log('Error!');
+					}
+				});
+
 		    }
 		}
 	});
@@ -55,13 +63,53 @@ function movieThis(userInput){
 
 			// console.log(JSON.parse(body, null, 2));
 			console.log('Title: ' +JSON.parse(body).Title);
+			fs.appendFile('log.txt', '\n'+'Title: ' +JSON.parse(body).Title ,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('Released: ' +JSON.parse(body).Year);
+			fs.appendFile('log.txt', '\n'+'Released: ' +JSON.parse(body).Year ,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('IMDB Rating: ' +JSON.parse(body).imdbRating);
+			fs.appendFile('log.txt', '\n'+ 'IMDB Rating: ' +JSON.parse(body).imdbRating,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('Rotten Tomatoes Rating: ' +JSON.parse(body).Ratings[1].Value +' Fresh');
+			fs.appendFile('log.txt', '\n'+'Rotten Tomatoes Rating: ' +JSON.parse(body).Ratings[1].Value +' Fresh' ,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('Produced in: ' +JSON.parse(body).Country);
+			fs.appendFile('log.txt', '\n'+ 'Produced in: ' +JSON.parse(body).Country,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('Language(s): ' +JSON.parse(body).Language);
+			fs.appendFile('log.txt', '\n'+ 'Language(s): ' +JSON.parse(body).Language,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('Summary: ' +JSON.parse(body).Plot);
+			fs.appendFile('log.txt', '\n'+ 'Summary: ' +JSON.parse(body).Plot,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 			console.log('Starring: ' +JSON.parse(body).Actors);
+			fs.appendFile('log.txt', '\n'+ 'Starring: ' +JSON.parse(body).Actors,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 		}
 		else{
 			console.log('No OMDB Results found for "'+userInput +'"');
@@ -94,20 +142,45 @@ function spotifyThisSong(userInput){
 		//print appropriate responses
 
 		console.log('\nSpotify results for: ' + userInput +':\n');
+		fs.appendFile('log.txt','\nSpotify results for: ' + userInput +':','utf8', function(err){
+			if(err){
+				console.log('Error!');
+			}
+		});
 
 		//Artist(s)
 		for( var i = 0; i < data.tracks.items[0].artists.length; i++ ){
 			console.log('Artist: ' +data.tracks.items[0].artists[i].name +' '); 
+			fs.appendFile('log.txt', '\n'+'Artist: ' +data.tracks.items[0].artists[i].name +' ' ,'utf8', function(err){
+				if(err){
+					console.log('Error!');
+				}
+			});
 		}
 
 	 	//The song's name
-	    console.log('Song: ' +data.tracks.items[0].name); 
+	    console.log('Song: ' +data.tracks.items[0].name);
+	    fs.appendFile('log.txt', '\n'+'Song: ' +data.tracks.items[0].name ,'utf8', function(err){
+			if(err){
+				console.log('Error!');
+			}
+		}); 
 
 	    //The album that the song is from
 	    console.log('Album: ' +data.tracks.items[0].album.name)
-	    
+		fs.appendFile('log.txt', '\n'+'Album: ' +data.tracks.items[0].album.name ,'utf8', function(err){
+			if(err){
+				console.log('Error!');
+			}
+		});
+
 	    //A preview link of the song from Spotify
 	    console.log('Preview: ' +data.tracks.items[0].preview_url);
+		fs.appendFile('log.txt', '\n'+'Preview: ' +data.tracks.items[0].preview_url ,'utf8', function(err){
+			if(err){
+				console.log('Error!');
+			}
+		});	    
 
    	});
 
@@ -131,6 +204,12 @@ function doWhatItSays(){
 
 		//set userInput to second element in dataArray
 		userInput = dataArray[1];
+
+		fs.appendFile('log.txt', '\n' +liriMode +' ' +userInput,'utf8', function(err){
+			if(err){
+				console.log('Error!');
+			}
+		});
 
 		runCommand();
 
@@ -163,13 +242,23 @@ function runCommand(){
 			doWhatItSays();
 			break;
 
-		case undefined:
+		default:
 
-			console.log('Please enter an argument.');
+			console.log('Please enter an valid argument:');
+			console.log('  movie-this');
+			console.log('  my-tweets');
+			console.log('  spotify-this-song');
+			console.log('  do-what-it-says');
 			break;
 	}
 };
 
 // --- --- --- MAIN LOGIC --- --- ---
+
+fs.appendFile('log.txt', '\n\n------------------------------------------------\n\n'+liriMode +' ' +userInput +'\n','utf8', function(err){
+	if(err){
+		console.log('Error!');
+	}
+});
 
 runCommand();
